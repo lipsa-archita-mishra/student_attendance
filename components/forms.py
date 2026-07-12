@@ -29,7 +29,8 @@ def handle_photo_upload(student_id: str, uploaded_file) -> Optional[str]:
 
 def student_form(
     initial_data: Optional[Dict[str, Any]] = None,
-    is_edit: bool = False
+    is_edit: bool = False,
+    key_prefix: str = "form"
 ) -> Tuple[Optional[Dict[str, Any]], Optional[Any]]:
     """
     Renders a unified form for adding and editing a student.
@@ -49,28 +50,29 @@ def student_form(
             "Student ID *", 
             value=data.get("id", ""), 
             disabled=is_edit,
-            help="E.g., STU-1001. Cannot be changed after creation."
+            help="E.g., STU-1001. Cannot be changed after creation.",
+            key=f"{key_prefix}_id"
         )
-        name = st.text_input("Full Name *", value=data.get("name", ""))
-        roll_number = st.text_input("Roll Number / Registration No. *", value=data.get("roll_number", ""))
+        name = st.text_input("Full Name *", value=data.get("name", ""), key=f"{key_prefix}_name")
+        roll_number = st.text_input("Roll Number / Registration No. *", value=data.get("roll_number", ""), key=f"{key_prefix}_roll")
         
         # Dropdowns
         dept_val = data.get("department", DEPARTMENTS[0])
         dept_idx = DEPARTMENTS.index(dept_val) if dept_val in DEPARTMENTS else 0
-        department = st.selectbox("Department *", DEPARTMENTS, index=dept_idx)
+        department = st.selectbox("Department *", DEPARTMENTS, index=dept_idx, key=f"{key_prefix}_dept")
         
         sem_val = data.get("semester", SEMESTERS[0])
         sem_idx = SEMESTERS.index(sem_val) if sem_val in SEMESTERS else 0
-        semester = st.selectbox("Semester *", SEMESTERS, index=sem_idx)
+        semester = st.selectbox("Semester *", SEMESTERS, index=sem_idx, key=f"{key_prefix}_sem")
 
     with col2:
         sec_val = data.get("section", SECTIONS[0])
         sec_idx = SECTIONS.index(sec_val) if sec_val in SECTIONS else 0
-        section = st.selectbox("Section *", SECTIONS, index=sec_idx)
+        section = st.selectbox("Section *", SECTIONS, index=sec_idx, key=f"{key_prefix}_sec")
         
-        email = st.text_input("Email Address *", value=data.get("email", ""))
-        phone = st.text_input("Phone Number *", value=data.get("phone", ""))
-        address = st.text_area("Home Address *", value=data.get("address", ""), height=100)
+        email = st.text_input("Email Address *", value=data.get("email", ""), key=f"{key_prefix}_email")
+        phone = st.text_input("Phone Number *", value=data.get("phone", ""), key=f"{key_prefix}_phone")
+        address = st.text_area("Home Address *", value=data.get("address", ""), height=100, key=f"{key_prefix}_address")
 
     # Photo uploading and preview
     st.markdown("### Profile Picture")
@@ -82,7 +84,7 @@ def student_form(
     with col_pic1:
         if existing_photo_path and os.path.exists(existing_photo_path):
             st.image(existing_photo_path, caption="Current Picture", use_container_width=True)
-            if st.button("Remove Photo", key="remove_photo_btn"):
+            if st.button("Remove Photo", key=f"{key_prefix}_remove_photo_btn"):
                 photo_removed = True
         else:
             st.info("No Photo Uploaded")
@@ -91,14 +93,15 @@ def student_form(
         uploaded_file = st.file_uploader(
             "Upload Photo (PNG, JPG, JPEG)", 
             type=["png", "jpg", "jpeg"],
-            help="Recommend square dimensions for profile display."
+            help="Recommend square dimensions for profile display.",
+            key=f"{key_prefix}_photo"
         )
         if uploaded_file:
             st.image(uploaded_file, caption="Uploaded Preview", width=120)
 
     # Submission
     submit_label = "Update Student Record" if is_edit else "Add Student"
-    submitted = st.button(submit_label, type="primary")
+    submitted = st.button(submit_label, type="primary", key=f"{key_prefix}_submit")
     
     if submitted:
         # Assemble form data

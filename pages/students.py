@@ -89,7 +89,7 @@ def show_students_page():
     # ==========================================
     with tab_add:
         # Render the student creation form
-        form_data, uploaded_file = student_form(is_edit=False)
+        form_data, uploaded_file = student_form(is_edit=False, key_prefix="add")
         
         if form_data:
             # Add to DB
@@ -166,7 +166,7 @@ def show_students_page():
             with col_edit:
                 st.markdown("### Edit details")
                 # Render editing form pre-populated
-                edited_data, uploaded_edit_file = student_form(initial_data=student_data, is_edit=True)
+                edited_data, uploaded_edit_file = student_form(initial_data=student_data, is_edit=True, key_prefix="edit")
                 
                 if edited_data:
                     # Save changes
