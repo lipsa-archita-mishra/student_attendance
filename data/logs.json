@@ -1,0 +1,20 @@
+[
+  {
+    "timestamp": "2026-07-12T18:57:18.435597",
+    "event_type": "logout",
+    "description": "User 'admin' logged out.",
+    "username": "admin"
+  },
+  {
+    "timestamp": "2026-07-12T18:52:42.238068",
+    "event_type": "login_success",
+    "description": "User 'admin' logged in successfully.",
+    "username": "admin"
+  },
+  {
+    "timestamp": "2026-07-12T18:51:54.619972",
+    "event_type": "database_init",
+    "description": "Database initialized with default administrator user 'admin'.",
+    "username": "system"
+  }
+]

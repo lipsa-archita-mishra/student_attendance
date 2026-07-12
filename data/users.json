@@ -1,0 +1,9 @@
+{
+  "admin": {
+    "username": "admin",
+    "password_hash": "bcrypt:$$2b$12$.bdKkPnZT4CN1TBWcHjivedto.OIn3CrGzmGDm2Z2hEkN/FNFDE/O",
+    "name": "System Administrator",
+    "email": "admin@school.com",
+    "role": "Admin"
+  }
+}
